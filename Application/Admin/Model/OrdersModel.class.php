@@ -37,7 +37,8 @@ class OrdersModel extends Model
                 if($order_item['quantity']<=0){
                     $status=1;
                 }
-                $now_stock=$item_detail['stock']-$item_detail['sell_num']-$item_detail['reserve_num'];
+                $sell_number= D('OrderItem')->get_sell($item_ids[$i]);
+                $now_stock=$item_detail['stock']-$sell_number;
                 if($now_stock < $order_item['quantity']){
                     $status=2;
                 }

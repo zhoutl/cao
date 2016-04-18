@@ -51,6 +51,13 @@
     </div>
     <form action="{:U()}" method="post" class="form-horizontal" enctype="multipart/form-data">
         <div class="form-item">
+            <label class="item-label">是否预订<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="radio" class=" input-x" name="is_reserve" value="0" checked>否
+                <input type="radio" class=" input-x" name="is_reserve" value="1">是
+            </div>
+        </div>
+        <div class="form-item">
             <input type="text" class="text input-3x" id="search_name" name="search_name" value="" placeholder="请输入商品名称">
             <input type="text" class="text input-3x" id="artno" name="artno" value="" placeholder="请输入商品货号">
             <a  class="btn" onclick="show_items()">搜索</a>
@@ -106,5 +113,9 @@
 </block>
 
 <block name="script">
+    <script type="text/javascript">
 
+        //导航高亮
+        highlight_subnav('{:U('index')}');
+    </script>
 </block>

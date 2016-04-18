@@ -43,4 +43,11 @@ class OrderItemModel extends Model
         }
         return $result;
     }
+
+    //获得商品售卖数量
+    public function get_sell($item_id)
+    {
+        $number=$this->where('item_id='.$item_id)->sum('quantity');
+        return $number;
+    }
 }

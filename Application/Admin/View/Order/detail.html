@@ -1,0 +1,73 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2><present name="data">订单详情</present></h2>
+    </div>
+
+
+    <div class="data-table table-striped">
+        <div class="columns-mod">
+            <div class="hd cf">
+                <h5>订单详细信息</h5>
+                <div class="title-opt">
+                </div>
+            </div>
+            <div class="bd" style="height: 480px">
+                <div class="sys-info">
+                    <table>
+                        <tr>
+                            <th>商品信息</th>
+                            <td>
+                                 <table>
+                                     <th>商品名称</th>
+                                     <th>图片</th>
+                                     <th>数量</th>
+                                     <volist name="order_item" id="item">
+                                         <tr>
+                                             <td>{$item.item_name}</td>
+                                             <td><img src="__ROOT__{$item.pic}" width="100px" height="100px"></td>
+                                             <td>{$item.quantity}</td>
+                                         </tr>
+                                     </volist>
+                                 </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>总金额</th>
+                            <td>{$data.order.amount}</td>
+                        </tr>
+                        <tr>
+                            <th>收货人</th>
+                            <td>{$data.order.consignee}<p>{$data.order.mobile}</p></td>
+                        </tr>
+                        <tr>
+                            <th>收货人地址</th>
+                            <td>{$data.order.address}</td>
+                        </tr>
+                        <tr>
+                            <th>物流单号</th>
+                            <td>{$data.order.shipping_sn}</td>
+                        </tr>
+                        <tr>
+                            <th>备注</th>
+                            <td>{$data.order.desc}</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div style="padding-top:20px ">
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        //导航高亮
+        highlight_subnav('{:U('index')}');
+
+    </script>
+</block>

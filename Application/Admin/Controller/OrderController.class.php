@@ -54,33 +54,35 @@ class OrderController extends AdminController
                 $this->error($result['msg']);
             }
         }else{
-            $this->meta_title = '新增订单';
+            $this->meta_title = '新增';
             $this->display();
         }
 
     }
     //编辑订单
     public function edit(){
-        if(IS_POST){
-            $data=I('post.');
-            $result= D('Orders')->add_order($data);
-            if($result['status']){
-                $this->success('新增成功', Cookie('__forward__'));
-            }else{
-                $this->error($result['msg']);
-            }
-        }else{
-            $this->meta_title = '新增订单';
-            $this->display();
-        }
+       $q= D('OrderItem')->get_sell(38);
+        print_r($q);
+//        if(IS_POST){
+//            $data=I('post.');
+//            $result= D('Orders')->add_order($data);
+//            if($result['status']){
+//                $this->success('修改成功', Cookie('__forward__'));
+//            }else{
+//                $this->error($result['msg']);
+//            }
+//        }else{
+//            $this->meta_title = '修改订单';
+//            $this->display();
+//        }
 
     }
 
     /**
-     * 删除订单
+     * 取消订单
      * @author zhoutonglei
      */
-    public function del(){
+    public function cancel(){
         $id = array_unique((array)I('id',0));
 
         if ( empty($id) ) {
@@ -88,10 +90,33 @@ class OrderController extends AdminController
         }
 
         $map = array('order_id' => array('in', $id) );
-        if(D('Orders')->where($map)->delete()){
-            $this->success('删除成功');
+        if(D('Orders')->where($map)->delete() && D('OrderItem')->where($map)->delete()){
+            $this->success('取消成功');
         } else {
-            $this->error('删除失败！');
+            $this->error('取消失败！');
         }
+    }
+
+    /**
+     * 订单详情
+     * @author zhoutonglei
+     */
+    public function detail()
+    {
+        $data['order']=D('Orders')->find(intval(I('id')));
+        $data['order_item']=D('OrderItem')->where('order_id='. $data['order']['order_id'])->select();
+        foreach($data['order_item'] as $k=>$val){
+            $item=M('Item')->field('pic')->find($val['item_id']);
+            if($item['pic']!='') {
+                $array_img=explode(',',$item['pic']);
+                $data['order_item'][$k]['pic']=$array_img[0];
+            }else{
+                $data['order_item'][$k]['pic']='/Uploads/Picture/nopic.jpg';
+            }
+        }
+        $this->assign('order_item',$data['order_item']);
+        $this->assign('data',$data);
+        $this->meta_title = '订单详情';
+        $this->display();
     }
 }

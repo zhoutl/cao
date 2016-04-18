@@ -67,7 +67,8 @@ class ItemController extends AdminController
             }else{
                 $list[$k]['unit']='件';
             }
-            $list[$k]['stock']=$v['stock']-$v['sell_num']-$v['reserve_num'];
+            $sell_number= D('OrderItem')->get_sell($v['id']);
+            $list[$k]['stock']=$v['stock']-$sell_number;
            // $material=D('Dictionary')->field('title')->find($v['material']);
             $purity=D('Dictionary')->field('title')->find($v['purity']);
             $list[$k]['material']=$purity['title'];
@@ -164,7 +165,8 @@ class ItemController extends AdminController
                 }
                 $this->assign('picture', $pic);
             }
-            $info['stock']=$info['stock']-$info['sell_num']-$info['reserve_num'];
+            $sell_number= D('OrderItem')->get_sell($id);
+            $info['stock']=$info['stock']-$sell_number;
             $this->assign('info', $info);
             $this->meta_title = '编辑商品信息';
             $this->display();
@@ -214,7 +216,8 @@ class ItemController extends AdminController
         $this->assign('picture',$pic);
         $description=D('ItemDetail')->where("item_id=".$item['id'])->field(true)->find();
         $item['description']=$description['description'];
-        $item['stock']=$item['stock']-$item['sell_num']-$item['reserve_num'];
+        $sell_number= D('OrderItem')->get_sell(intval(I('id')));
+        $item['stock']=$item['stock']- $sell_number;
         $this->assign('data',$item);
         $this->meta_title = '商品详细信息';
         $this->display();
@@ -351,7 +354,8 @@ class ItemController extends AdminController
             }
             $items = M('Item')->where($map)->field(true)->select();
             foreach($items as $k=>$v){
-                $items[$k]['stock']=$v['stock']-$v['sell_num']-$v['reserve_num'];
+                $sell_number= D('OrderItem')->get_sell($v['id']);
+                $items[$k]['stock']=$v['stock']-$sell_number;
             }
             if($items){
                 $data=array('status'=>1,'data'=>$items);
