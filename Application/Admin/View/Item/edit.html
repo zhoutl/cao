@@ -1,0 +1,202 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+    <script type="text/javascript" src="__JS__/myQuery.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            materialChange();
+        });
+        function  materialChange(){
+            var $pro = $("#material");
+            setPurity($pro.val());
+        }
+        function setPurity(pid){
+            var $purity = $("#purity");
+            $.ajax({
+                url: "<?php echo U('getPurity') ;?>",
+                data:{pid:pid},
+                type:'post',
+                dataType:'json',
+                context: document.body,
+                success: function(data){
+                    var option, modelVal;
+                    if(data.status==1) {
+                        for (var i = 0, len = data['data'].length; i < len; i++) {
+                            modelVal = data['data'][i];
+                            option = "<option value='" + modelVal['id'] + "'>" + modelVal['title'] + "</option>";
+                            $purity.append(option);
+                        }
+                    }else{
+                        $purity.empty();
+                    }
+
+              }
+            }
+            );
+
+
+        }
+    </script>
+    <div class="main-title">
+        <h2>{:isset($info['id'])?'编辑':'新增'}商品类别</h2>
+    </div>
+    <form action="{:U()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="form-item">
+            <label class="item-label">商品款式选择<span class="check-tips"></span></label>
+            <div class="controls" >
+                <select name="style_id" class="input-2x">
+                    <volist name="style" id="style">
+                        <option value="{$style.id}">{$style.title}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">适合人群<span class="check-tips"></span></label>
+            <div class="controls">
+                <select name="crowd" class="input-2x">
+                    <option value="0">适合人群</option>
+                    <option value="1">男性</option>
+                    <option value="2">女性</option>
+                    <option value="3">中性</option>
+                    <option value="4">儿童</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">材质<span class="check-tips"></span></label>
+            <div class="controls">
+                <select name="material" id="material" onchange="materialChange();" class="input-2x">
+                    <volist name="materials" id="cate">
+                        <option value="{$cate.id}">{$cate.title}</option>
+                    </volist>
+                </select>
+                <select name="purity" id="purity" class="input-2x">
+
+                </select>
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">商品名称<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="item_name" value="{$info.item_name|default=''}">
+            </div>
+        </div>
+
+        <div class="form-item" id="tab1">
+            <label class="item-label">商品图片<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="file" id="upload_picture">
+                <!--<input type="hidden" name="{$field.name}" id="cover_id_{$field.name}" value="{$data[$field['name']]}"/>-->
+                <div class="upload-img-box">
+                    <notempty name="picture">
+                        <volist name="picture" id="picture">
+                            <div class="upload-pre-item">
+                                <input type="hidden" name="icon[]" value="{$picture['path']}" class="icon" />
+                                <img src="__ROOT__{$picture['path']}" data-id="{$picture['id']}"/>
+                                <span class='btn-close' title='删除图片'></span>
+                            </div>
+                        </volist>
+                    </notempty>
+                </div>
+                <script type="text/javascript">
+                    //上传图片
+                    /* 初始化上传插件 */
+                    $("#upload_picture").uploadify({
+                        "height"          : 30,
+                        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+                        "fileObjName"     : "download",
+                        "buttonText"      : "上传图片",
+                        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+                        "width"           : 120,
+                        'removeTimeout'	  : 1,
+                        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+                        "onUploadSuccess" : uploadPicture,
+                        'uploadLimit'     :2,
+                    'onFallback' : function() {
+                        alert('未检测到兼容版本的Flash.');
+                      }
+                    });
+                    function uploadPicture(file, data){
+                        var data = $.parseJSON(data);
+                        var src = '';
+                        if(data.status){
+                          //创建img input close-btn
+                             $_img_path = $("<input type='hidden' name='icon[]' class='icon' value=''/>");
+                            $_img_path.val(data.path);
+                            $('#tab1').append($_img_path);
+                            src=data.url || '__ROOT__'+data.path;
+                            //创建图片节点
+                            $_upload_img = $("<img src=" + src +" title='点击显示大图' > ");
+                            $_img_del = $("<span class='btn-close' title='删除图片'></span>");
+
+                            //创建div添加图片节点和删除节点
+                            $_upload_item=$("<div class='upload-pre-item'></div>");
+                            $_upload_item.append($_upload_img);
+                            $_upload_item.append($_img_del);
+                            $(".icon").parent().find('.upload-img-box').append($_upload_item);
+                        } else {
+                            updateAlert(data.info);
+                            setTimeout(function(){
+                                $('#top-alert').find('button').click();
+                                $(that).removeClass('disabled').prop('disabled',false);
+                            },1500);
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+
+
+        <div class="form-item">
+            <label class="item-label">重量（克）<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="weight" value="{$info.weight|default='0'}">
+            </div>
+        </div>
+        <div class="form-item">
+            <?php if($info['stock']){ ?>
+                <label class="item-label">库存:<span class="check-tips"></span>    <input type="text" class="text input-x" name="stock" value="{$info.stock}" disabled="ture"></label>
+            <div class="controls">
+            <label class="item-label">增加库存:<span class="check-tips"></span>   <input type="text" class="text input-x" name="add_stock" value="0"></label>
+            </div>
+            <?php }else{ ?>
+                <label class="item-label">库存<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="stock" value="{$info.stock|default='1'}">
+                </div>
+            <?php } ?>
+
+        </div>
+        <div class="form-item">
+            <label class="item-label">详细描述<span class="check-tips"></span></label>
+            <div class="controls">
+                <label class="textarea">
+                    <textarea name="description">{$info.description|default=''}</textarea>
+                    {:hook('adminArticleEdit', array('name'=>'description','value'=>$info['description']))}
+                </label>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <input type="hidden" name="id" value="{$info.id|default=''}">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        Think.setValue("style_id", {$info.style_id|default = 0});
+        Think.setValue("material", {$info.material|default = 0});
+        Think.setValue("purity", {$info.purity|default = 0});
+        Think.setValue("crowd", {$info.crowd|default = 0});
+        Think.setValue("pid", {$info.pid|default = 0});
+        Think.setValue("hide", {$info.hide|default = 0});
+        Think.setValue("is_dev", {$info.is_dev|default = 0});
+        //导航高亮
+        highlight_subnav('{:U('index')}');
+    </script>
+</block>

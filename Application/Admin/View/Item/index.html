@@ -1,0 +1,184 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <script type="text/javascript">
+        $(function(){
+            materialChange();
+        });
+        function  materialChange(){
+            var $pro = $("#material");
+            setPurity($pro.val());
+        }
+        function setPurity(pid){
+            var $purity = $("#purity");
+            $.ajax({
+                        url: "<?php echo U('getPurity') ;?>",
+                        data:{pid:pid},
+                        type:'post',
+                        dataType:'json',
+                        context: document.body,
+                        success: function(data){
+                            var option, modelVal;
+                            var purity_id= "<?php echo $info['purity']; ?>";
+                            if(data.status==1) {
+                                for (var i = 0, len = data['data'].length; i < len; i++) {
+                                    modelVal = data['data'][i];
+                                    option = "<option value='" + modelVal['id'] + "'>" + modelVal['title'] + "</option>";
+                                    $purity.append(option);
+                                    if(modelVal['id']==purity_id){
+                                        Think.setValue("purity", modelVal['id']);
+                                    }
+                                }
+                            }else{
+                                $purity.empty();
+                            }
+
+                        }
+                    }
+            );
+
+
+        }
+    </script>
+    <div class="main-title">
+        <h2><present name="data">[ {$data.title} ] 子</present>商品管理 </h2>
+    </div>
+
+    <div class="cf">
+        <a class="btn" href="{:U('add',array('pid'=>I('get.pid',0)))}">新 增</a>
+        <button class="btn ajax-post confirm" url="{:U('del')}" target-form="ids">删 除</button>
+        <!-- 高级搜索 -->
+        <div class="search-form fr cf">
+            <form action="{:U('index')}" method="post"  >
+                <p style="padding: 5px 200px ">
+                    <select name="style_id" class=" input-3x" >
+                        <volist name="style" id="style">
+                            <option value="{$style.id}">{$style.title}</option>
+                        </volist>
+                    </select>
+                    <select name="material" id="material" onchange="materialChange();" class=" input-2x">
+                        <volist name="materials" id="cate">
+                            <option value="{$cate.id}">{$cate.title}</option>
+                        </volist>
+                    </select>
+                    <select name="purity" id="purity" class=" input-2x">
+
+                    </select>
+                        <select name="crowd" class="input-2x">
+                            <option value="0">适合人群</option>
+                            <option value="1">男性</option>
+                            <option value="2">女性</option>
+                            <option value="3">中性</option>
+                            <option value="4">儿童</option>
+                        </select>
+                </p>
+                <label>上架时间:</label>
+                <input type="text"  name="start_time" value="{:I('start_time')}" class="time-start text input-2x" placeholder="起始时间">-
+                <input type="text"   name="end_time"  value="{:I('end_time')}" class="time-end text input-2x" placeholder="结束时间">
+                <label>重量范围:</label>
+                <input type="text" name="min_weight" value="{:I('min_weight')}" class="text input-x" placeholder="">-
+                <input type="text" name="max_weight" value="{:I('max_weight')}" class="text input-x" placeholder="">
+                <input type="text" name="item_name"  class="text input-4x" value="{:I('item_name')}" placeholder="请输入商品名称">
+                <button type="submit" class="btn"  >搜索</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="data-table table-striped">
+        <form class="ids">
+            <table align="">
+                <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox">
+                    </th>
+                    <th>货号</th>
+                    <th>名称</th>
+                    <th>图片</th>
+                    <th>款式</th>
+                    <th>材质</th>
+                    <th>单位</th>
+                    <th>库存</th>
+                    <th>上架时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="list">
+                    <volist name="list" id="item">
+                        <tr>
+                            <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$item.id}"></td>
+                            <td>{$item.artno}</td>
+                            <td width="10%">
+                                <a href="{:U('detail?id='.$item['id'])}">{$item.item_name}</a>
+                            </td>
+                            <td><img src="__ROOT__{$item.pic|default='/Uploads/Picture/nopic.jpg'}" width="100px" height="100px"></td>
+                            <td>{$item.style}</td>
+                            <td>{$item.material}</td>
+                            <td>{$item.unit}</td>
+                            <td>
+                                <?php if($item['stock']){
+                                echo $item['stock'];
+                                 }else{
+                                echo "<span style='color: red ;font-weight: bolder'>".$item['stock']."</span>";
+                                }   ?>
+                            </td>
+                            <td>{$item.add_time}</td>
+                            <!--<td>{$item.sell_time}</td>-->
+                            <!--<td>-->
+                                <!--<a href="{:U('toogleSell',array('id'=>$item['id'],'value'=>abs($item['status']-1)))}" class="ajax-get">-->
+                                    <!--{$item.status_text}-->
+                                <!--</a>-->
+                            <!--</td>-->
+                            <td>
+                                <a title="编辑" href="{:U('edit?id='.$item['id'])}">编辑</a>
+                                <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$item['id'])}">删除</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td>
+                </notempty>
+                </tbody>
+            </table>
+        </form>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        Think.setValue("style_id", {$info.style_id|default = 0});
+        Think.setValue("crowd", {$info.crowd|default = 0});
+        Think.setValue("material", {$info.material|default = 0});
+        Think.setValue("purity", {$info.purity|default = 0});
+        Think.setValue("status", {$info.status|default = 0});
+        $(function() {
+            $('.time-start').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+
+            $('.time-end').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+
+            highlight_subnav('{:U('index')}');
+
+        });
+    </script>
+</block>

@@ -1,0 +1,77 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2><present name="data">商品详情</present></h2>
+    </div>
+
+
+    <div class="data-table table-striped">
+            <div class="columns-mod">
+                <div class="hd cf">
+                    <h5>商品信息</h5>
+                    <div class="title-opt">
+                    </div>
+                </div>
+                <div class="bd" style="height: 480px">
+                    <div class="sys-info">
+                        <table>
+                            <tr>
+                                <th>商品名称</th>
+                                <td>{$data.item_name}</td>
+                            </tr>
+                            <tr>
+                                <th>商品款式</th>
+                                <td>{$data.style}</td>
+                            </tr>
+                            <tr>
+                                <th>适合人群</th>
+                                <td>{$data.crowd}</td>
+                            </tr>
+                            <tr>
+                                <th>材质</th>
+                                <td>{$data.purity}</td>
+                            </tr>
+                            <tr>
+                                <th>重量</th>
+                                <td>{$data.weight}</td>
+                            </tr>
+                            <tr>
+                                <th>库存</th>
+                                <td>{$data.stock}</td>
+                            </tr>
+                            <tr>
+                                <th>图片</th>
+                                <td>
+                                    <volist name="picture" id="picture">
+                                            <img style="height: 200px;width: 200px ; padding:0.4cm; " src="__ROOT__{$picture['path']}" data-id="{$picture['id']}" width="200px" height="200px"/>
+                                   </volist>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>详细信息</th>
+                                <td>
+                                    <div class="span9 main-content">
+                                        <!-- Contents
+                                        ================================================== -->
+                                        <section id="description">{$data.description}</section>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <div style="padding-top:20px ">
+        <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+            //导航高亮
+            highlight_subnav('{:U('index')}');
+
+    </script>
+</block>

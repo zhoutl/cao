@@ -1,0 +1,112 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2><present name="data">订单管理</present> </h2>
+    </div>
+
+    <div class="cf">
+        <a class="btn" href="{:U('add')}">新 增</a>
+        <button class="btn ajax-post confirm" url="{:U('del')}" target-form="ids">删 除</button>
+        <!-- 高级搜索 -->
+        <div class="search-form fr cf">
+            <form action="{:U('index')}" method="post"  >
+                <label>下单时间:</label>
+                <input type="text"  name="start_time" value="{:I('start_time')}" class="time-start text input-2x" placeholder="起始时间">-
+                <input type="text"   name="end_time"  value="{:I('end_time')}" class="time-end text input-2x" placeholder="结束时间">
+                <input type="text" name="order_no"  class="text input-4x" value="{:I('order_no')}" placeholder="请输入订单号">
+                <input type="text" name="consignee"  class="text input-3x" value="{:I('consignee')}" placeholder="请输入收货人">
+                <input type="text" name="mobile"  class="text input-4x" value="{:I('mobile')}" placeholder="请输入收货人号码">
+                <button type="submit" class="btn"  >搜索</button>
+            </form>
+            <!--<div class="sleft">-->
+            <!--<input type="text" name="name" class="search-input" value="{:I('name')}" placeholder="请输入商品名称">-->
+            <!--<a class="sch-btn" href="javascript:;" id="search" url="__SELF__"><i class="btn-search"></i></a>-->
+            <!--</div>-->
+        </div>
+    </div>
+
+    <div class="data-table table-striped">
+        <form class="ids">
+            <table align="">
+                <thead>
+                <tr>
+                    <th class="row-selected">
+                        <input class="checkbox check-all" type="checkbox">
+                    </th>
+                    <th>订单号</th>
+                    <th>下单时间</th>
+                    <th>收货人</th>
+                    <th>收货地址</th>
+                    <th>总金额</th>
+                    <th>物流单号</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <notempty name="list">
+                    <volist name="list" id="order">
+                        <tr>
+                            <td><input class="ids row-selected" type="checkbox" name="id[]" value="{$order.order_id}"></td>
+                            <td>{$order.order_no}</td>
+                            <td><?php echo date('Y-m-d H:i',$order['create_time']); ?></td>
+                            <td>
+                                {$order.consignee}<br>
+                                {$order.mobile}
+                            </td>
+                            <td>{$order.address}</td>
+                            <td>{$order.amount|default=0}</td>
+                            <td>{$order.shipping_sn}</td>
+
+                            <td>
+                                <a title="编辑" href="{:U('edit?id='.$item['id'])}">编辑</a>
+                                <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$order['order_id'])}">删除</a>
+                            </td>
+                        </tr>
+                    </volist>
+                    <else/>
+                    <td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td>
+                </notempty>
+                </tbody>
+            </table>
+        </form>
+        <!-- 分页 -->
+        <div class="page">
+            {$_page}
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        Think.setValue("category_id", {$info.category_id|default = 0});
+        Think.setValue("material", {$info.material|default = 0});
+        Think.setValue("purity", {$info.purity|default = 0});
+        Think.setValue("status", {$info.status|default = 0});
+        Think.setValue("color", {$info.color|default = 0});
+        $(function() {
+            $('.time-start').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+
+            $('.time-end').datetimepicker({
+                format: 'yyyy-mm-dd',
+                language:"zh-CN",
+                minView:2,
+                autoclose:true
+            });
+//
+            //导航高亮
+            highlight_subnav('{:U('index')}');
+
+        });
+    </script>
+</block>

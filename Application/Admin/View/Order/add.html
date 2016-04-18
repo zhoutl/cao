@@ -1,0 +1,110 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <script type="text/javascript">
+        function show_num(id){
+           var $checkbox=$('#checkbox_'+id);
+            var num ;
+            if($('#btn'+id).is(':checked')) {
+                num="<input type='text' class='text input-x' id='num"+id+"' name='item_"+id+"' value='1'>";
+                $checkbox.append(num);
+            }else{
+                $('#num'+id).remove();
+            }
+
+        }
+        function show_items(){
+            var search_name=$("#search_name").val();
+            var artno=$("#artno").val();
+            var $item=$("#item");
+            $.ajax({
+                        url: "<?php echo U('Item/getItems') ;?>",
+                        data:{search_name:search_name,artno:artno},
+                        type:'post',
+                        dataType:'json',
+                        context: document.body,
+                        success: function(data){
+                            $item.empty();
+                            var input, modelVal;
+                            if(data.status==1) {
+                                for (var i = 0, len = data['data'].length; i < len; i++) {
+                                    modelVal = data['data'][i];
+                                    if(modelVal['stock']>0){
+                                        input="<label class='checkbox' id='checkbox_"+modelVal['id']+"'  ><input type='checkbox'  id='btn"+modelVal['id']+"' class='auth_rules' name='item[]' onclick='show_num("+modelVal['id']+")' value='"+modelVal['id']+"' >"+modelVal['item_name']+"*"+modelVal['stock']+"</label>";
+                                        $item.append(input);
+                                    }
+
+                                }
+                            }else{
+                                $item.empty();
+                            }
+
+                        }
+                    }
+            );
+
+
+        }
+    </script>
+    <div class="main-title">
+        <h2>新增订单</h2>
+    </div>
+    <form action="{:U()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="form-item">
+            <input type="text" class="text input-3x" id="search_name" name="search_name" value="" placeholder="请输入商品名称">
+            <input type="text" class="text input-3x" id="artno" name="artno" value="" placeholder="请输入商品货号">
+            <a  class="btn" onclick="show_items()">搜索</a>
+        </div>
+        <div class="form-item" id="item">
+
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">总金额<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="amount" value="">
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">收货人<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="consignee" value="">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">收货人地址<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="address" value="">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">收货人电话<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="mobile" value="">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">物流单号<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="shipping_sn" value="">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">订单备注<span class="check-tips"></span></label>
+            <div class="controls">
+                <label class="textarea input-large">
+                    <textarea name="desc"></textarea>
+                </label>
+            </div>
+        </div>
+        <div class="form-item">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+
+</block>
