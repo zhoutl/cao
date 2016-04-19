@@ -60,21 +60,28 @@ class OrderController extends AdminController
 
     }
     //编辑订单
-    public function edit(){
-       $q= D('OrderItem')->get_sell(38);
-        print_r($q);
-//        if(IS_POST){
-//            $data=I('post.');
-//            $result= D('Orders')->add_order($data);
-//            if($result['status']){
-//                $this->success('修改成功', Cookie('__forward__'));
-//            }else{
-//                $this->error($result['msg']);
-//            }
-//        }else{
-//            $this->meta_title = '修改订单';
-//            $this->display();
-//        }
+    public function edit($id=0){
+        if(IS_POST){
+            $data=I('post.');
+            $result= D('Orders')->edit_order($data);
+            if($result['status']){
+                $this->success('修改成功', Cookie('__forward__'));
+            }else{
+                $this->error($result['msg']);
+            }
+        }else{
+            $info=D('Orders')->field(true)->find($id);
+            $this->assign('info',$info);
+            $items=D('OrderItem')->field('item_id,item_name,quantity')->where('order_id='.$id)->select();
+            foreach($items as $k=>$val){
+                $item=D('Item')->field('pic')->find($val['item_id']);
+                $pic_array=explode(',',$item['pic']);
+                $items[$k]['pic']=$pic_array[0];
+            }
+            $this->assign('items',$items);
+            $this->meta_title = '修改订单';
+            $this->display();
+        }
 
     }
 
@@ -94,6 +101,24 @@ class OrderController extends AdminController
             $this->success('取消成功');
         } else {
             $this->error('取消失败！');
+        }
+    }
+    /**
+     * 删除订单
+     * @author zhoutonglei
+     */
+    public function del(){
+        $id = array_unique((array)I('id',0));
+
+        if ( empty($id) ) {
+            $this->error('请选择要操作的数据!');
+        }
+
+        $map = array('order_id' => array('in', $id) );
+        if(D('Orders')->where($map)->delete() && D('OrderItem')->where($map)->delete()){
+            $this->success('删除成功');
+        } else {
+            $this->error('删除失败！');
         }
     }
 

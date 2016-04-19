@@ -62,7 +62,9 @@
                                 <a title="编辑" href="{:U('edit?id='.$order['order_id'])}">编辑</a>
                                 <?php if($order['is_reserve']){ ?>
                                 <a class="confirm ajax-get" title="取消预订" href="{:U('cancel?id='.$order['order_id'])}">取消预订</a>
-                               <?php  } ?>
+                               <?php  }else{ ?>
+                                <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$order['order_id'])}">删除</a>
+                               <?php } ?>
                             </td>
                         </tr>
                     </volist>

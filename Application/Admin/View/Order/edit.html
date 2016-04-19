@@ -1,0 +1,86 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2>修改订单</h2>
+    </div>
+    <form action="{:U()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="form-item">
+            <table class="data-table" width="100%">
+                <thead>
+                <th>商品名称</th>
+                <th>图片</th>
+                <th>数量</th>
+                </thead>
+                <tbody>
+             <volist name="items" id="item">
+                  <tr>
+                     <td>{$item.item_name}</td>
+                      <td><img src="__ROOT__{$item.pic|default='/Uploads/Picture/nopic.jpg'}" width="100px" height="100px"></td>
+                      <td>{$item.quantity}</td>
+                  </tr>
+             </volist>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-item">
+            <label class="item-label">是否预订<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="radio" class=" input-x" name="is_reserve" value="0" checked>否
+                <input type="radio" class=" input-x" name="is_reserve" value="1" <?php if($info['is_reserve']){ echo 'checked'; } ?> >是
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">总金额<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="amount" value="{$info.amount}">
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label class="item-label">收货人<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="consignee" value="{$info.consignee}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">收货人地址<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="address" value="{$info.address}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">收货人电话<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="mobile" value="{$info.mobile}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">物流单号<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="shipping_sn" value="{$info.shipping_sn}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">订单备注<span class="check-tips"></span></label>
+            <div class="controls">
+                <label class="textarea input-large">
+                    <textarea name="desc">{$info.desc}</textarea>
+                </label>
+            </div>
+        </div>
+        <div class="form-item">
+            <input type="hidden" name="order_id" value="{$info.order_id|default=0}">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+
+        //导航高亮
+        highlight_subnav('{:U('index')}');
+    </script>
+</block>

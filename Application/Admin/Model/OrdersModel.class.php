@@ -23,6 +23,7 @@ class OrdersModel extends Model
         $info['address']=str_check($data['address']);
         $info['shipping_sn']=str_check($data['shipping_sn']);
         $info['desc']=str_check($data['desc']);
+        $info['is_reserve']=intval($data['is_reserve']);
         $info['amount']=round(intval($data['amount']),2);
         $info['create_time']=time();
         while(true){
@@ -75,7 +76,24 @@ class OrdersModel extends Model
         }
         return $result;
     }
-    public function edit_order(){
+
+    public function edit_order($data){
+        $info=array();
+        $info['order_id']=intval($data['order_id']);
+        $info['consignee']=str_check($data['consignee']);
+        $info['mobile']=str_check($data['mobile']);
+        $info['address']=str_check($data['address']);
+        $info['shipping_sn']=str_check($data['shipping_sn']);
+        $info['desc']=str_check($data['desc']);
+        $info['is_reserve']=intval($data['is_reserve']);
+        $info['amount']=round(intval($data['amount']),2);
+        if($this->create($info)){
+            $this->save($info);
+            $result=array('status'=>1,'msg'=>$info['order_id']);
+        }else{
+            $result=array('status'=>0,'msg'=>$this->getError());
+        }
+        return $result;
 
     }
 
