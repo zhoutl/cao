@@ -13,6 +13,7 @@
         }
         function setPurity(pid){
             var $purity = $("#purity");
+            var purity={$info.purity};
             $.ajax({
                 url: "<?php echo U('getPurity') ;?>",
                 data:{pid:pid},
@@ -24,7 +25,11 @@
                     if(data.status==1) {
                         for (var i = 0, len = data['data'].length; i < len; i++) {
                             modelVal = data['data'][i];
-                            option = "<option value='" + modelVal['id'] + "'>" + modelVal['title'] + "</option>";
+                            if(purity== modelVal['id']){
+                                option = "<option value='" + modelVal['id'] + "' selected>" + modelVal['title'] + "</option>";
+                            }else{
+                                option = "<option value='" + modelVal['id'] + "'>" + modelVal['title'] + "</option>";
+                            }
                             $purity.append(option);
                         }
                     }else{
@@ -191,7 +196,7 @@
     <script type="text/javascript">
         Think.setValue("style_id", {$info.style_id|default = 0});
         Think.setValue("material", {$info.material|default = 0});
-        Think.setValue("purity", {$info.purity|default = 0});
+
         Think.setValue("crowd", {$info.crowd|default = 0});
         Think.setValue("pid", {$info.pid|default = 0});
         Think.setValue("hide", {$info.hide|default = 0});
