@@ -117,7 +117,7 @@
                         'removeTimeout'	  : 1,
                         'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
                         "onUploadSuccess" : uploadPicture,
-                        'uploadLimit'     :2,
+                        'uploadLimit'     :5,
                     'onFallback' : function() {
                         alert('未检测到兼容版本的Flash.');
                       }
@@ -160,7 +160,7 @@
             </div>
         </div>
         <div class="form-item">
-            <?php if($info['stock']){ ?>
+            <?php if(isset($info['id'])){ ?>
                 <label class="item-label">库存:<span class="check-tips"></span>    <input type="text" class="text input-x" name="stock" value="{$info.stock}" disabled="ture"></label>
             <div class="controls">
             <label class="item-label">增加库存:<span class="check-tips"></span>   <input type="text" class="text input-x" name="add_stock" value="0"></label>
