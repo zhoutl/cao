@@ -193,6 +193,7 @@ button.close {
 	cursor: pointer;
 	border: 1px solid #ccc;
 	transition: all .3s linear;
+	position: relative;
 }
 .upload-img-box .upload-pre-item img {
 	vertical-align: top;
@@ -248,8 +249,8 @@ button.close {
 }
  .btn-close{
 	position: absolute;
-	/*top: -8px;*/
-	/*right: -8px;*/
+	top: 1px;
+	right: 2px;
 	width: 17px;
 	height: 17px;
 	background: url(../images/bg_icon.png) no-repeat -25px 0;

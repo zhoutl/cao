@@ -13,7 +13,7 @@
         }
         function setPurity(pid){
             var $purity = $("#purity");
-            var purity={$info.purity};
+            var purity_id="{$info.purity}";
             $.ajax({
                 url: "<?php echo U('getPurity') ;?>",
                 data:{pid:pid},
@@ -22,18 +22,17 @@
                 context: document.body,
                 success: function(data){
                     var option, modelVal;
+                    $purity.empty();
                     if(data.status==1) {
                         for (var i = 0, len = data['data'].length; i < len; i++) {
                             modelVal = data['data'][i];
-                            if(purity== modelVal['id']){
+                            if(purity_id== modelVal['id']){
                                 option = "<option value='" + modelVal['id'] + "' selected>" + modelVal['title'] + "</option>";
                             }else{
                                 option = "<option value='" + modelVal['id'] + "'>" + modelVal['title'] + "</option>";
                             }
                             $purity.append(option);
                         }
-                    }else{
-                        $purity.empty();
                     }
 
               }
@@ -62,8 +61,8 @@
             <div class="controls">
                 <select name="crowd" class="input-2x">
                     <option value="0">适合人群</option>
-                    <option value="1">男性</option>
-                    <option value="2">女性</option>
+                    <option value="1">女性</option>
+                    <option value="2">男性</option>
                     <option value="3">中性</option>
                     <option value="4">儿童</option>
                 </select>

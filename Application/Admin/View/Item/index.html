@@ -66,8 +66,8 @@
                     </select>
                         <select name="crowd" class="input-2x">
                             <option value="0">适合人群</option>
-                            <option value="1">男性</option>
-                            <option value="2">女性</option>
+                            <option value="1">女性</option>
+                            <option value="2">男性</option>
                             <option value="3">中性</option>
                             <option value="4">儿童</option>
                         </select>
@@ -97,6 +97,7 @@
                     <th>名称</th>
                     <th>图片</th>
                     <th>款式</th>
+                    <th>适合人群</th>
                     <th>材质</th>
                     <th>单位</th>
                     <th>库存</th>
@@ -115,6 +116,7 @@
                             </td>
                             <td><img src="__ROOT__{$item.pic|default='/Uploads/Picture/nopic.jpg'}" width="100px" height="100px"></td>
                             <td>{$item.style}</td>
+                            <td>{$item.crowd_title}</td>
                             <td>{$item.material}</td>
                             <td>{$item.unit}</td>
                             <td>

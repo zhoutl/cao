@@ -7,10 +7,15 @@
  */
 
 namespace Admin\Controller;
-
+vendor('Code.Phpqrcode','' , '.php'); //引用Vendor目录下的phpSpi目录下的QueryList.class.php文件
 
 class ItemController extends AdminController
 {
+    public function _initialize(){
+        $this->crowd=array('1'=>'女性','2'=>'男性','3'=>'中性','4'=>'儿童');
+        parent::_initialize();
+    }
+
     public function index(){
        //查询条件过滤
         $item_name      =   trim(I('item_name'));
@@ -69,6 +74,7 @@ class ItemController extends AdminController
             }
             $sell_number= D('OrderItem')->get_sell($v['id']);
             $list[$k]['stock']=$v['stock']-$sell_number;
+            $list[$k]['crowd_title']=$this->crowd[$v['crowd']];
            // $material=D('Dictionary')->field('title')->find($v['material']);
             $purity=D('Dictionary')->field('title')->find($v['purity']);
             $list[$k]['material']=$purity['title'];
@@ -200,13 +206,12 @@ class ItemController extends AdminController
      */
     public function detail()
     {
-        $crowd=array('1'=>'女性','2'=>'男性','3'=>'中性','4'=>'儿童');
         $item=D('Item')->find(intval(I('id')));
         $purity = M('Dictionary')->find($item['purity']);
         $item['purity']=$purity['title'];
         $style = M('Dictionary')->find($item['style_id']);
         $item['style']=$style['title'];
-        $item['crowd']=$crowd[$item['crowd']];
+        $item['crowd']=$this->crowd[$item['crowd']];
         if($item['pic']!='') {
             $array_img=explode(',',$item['pic']);
             for ($i = 1; $i <= count($array_img); $i++) {
@@ -366,5 +371,10 @@ class ItemController extends AdminController
         }
 
     }
+    public function aa(){
+
+     print_r($_SERVER['HTTP_HOST'].U('Home/index/aa'));
+    }
+
 
 }
