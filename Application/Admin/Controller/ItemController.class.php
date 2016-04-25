@@ -12,7 +12,7 @@ vendor('Code.Phpqrcode','' , '.php'); //引用Vendor目录下的phpSpi目录下�
 class ItemController extends AdminController
 {
     public function _initialize(){
-        $this->crowd=array('1'=>'女性','2'=>'男性','3'=>'中性','4'=>'儿童');
+        $this->crowd=array('1'=>'女性','2'=>'男性','3'=>'男女通用','4'=>'儿童');
         parent::_initialize();
     }
 

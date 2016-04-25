@@ -37,6 +37,18 @@
                                 <td>{$data.weight}</td>
                             </tr>
                             <tr>
+                                <th>空/实心</th>
+                                <td><?php if($data['solid']==1){ echo "实心"; }else{ echo "空心";  } ?></td>
+                            </tr>
+                            <tr>
+                                <th>图案</th>
+                                <td>{$data.texture}</td>
+                            </tr>
+                            <tr>
+                                <th>尺寸</th>
+                                <td>{$data.size}</td>
+                            </tr>
+                            <tr>
                                 <th>库存</th>
                                 <td>{$data.stock}</td>
                             </tr>

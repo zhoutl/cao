@@ -35,7 +35,7 @@ class ItemModel extends Model
                         $artno='110'.$id;
                         $this->where('id='.$id)->setField(array('artno'=>$artno));
                         $code= new \QRcode();
-                        $text='http://'.$_SERVER['HTTP_HOST'].U('Wap/item/detail?id='.$id);
+                        $text='http://'.$_SERVER['HTTP_HOST'].U('Wap/item/detail/id/'.$id);
                         $outfile='Uploads/ItemCode/'.$artno.'.png';
                         $code->png($text, $outfile, $level='M', $size=3, $margin=3, $saveandprint=false);
                         $result=array('status'=>1,'id'=>$id);

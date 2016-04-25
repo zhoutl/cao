@@ -63,7 +63,7 @@
                     <option value="0">适合人群</option>
                     <option value="1">女性</option>
                     <option value="2">男性</option>
-                    <option value="3">中性</option>
+                    <option value="3">男女通用</option>
                     <option value="4">儿童</option>
                 </select>
             </div>
@@ -84,7 +84,7 @@
         <div class="form-item">
             <label class="item-label">商品名称<span class="check-tips"></span></label>
             <div class="controls">
-                <input type="text" class="text input-large" name="item_name" value="{$info.item_name|default=''}">
+                <input type="text" class="text input-large" name="item_name" value="{$info.item_name|default=''}" placeholder="请填写商品名称">
             </div>
         </div>
 
@@ -157,6 +157,25 @@
             <label class="item-label">重量（克）<span class="check-tips"></span></label>
             <div class="controls">
                 <input type="text" class="text input-large" name="weight" value="{$info.weight|default='0'}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">空/实心<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="radio" class=" input-x" name="solid" value="0" checked>空心
+                <input type="radio" class=" input-x" name="solid" value="1" <?php if($info['solid']){ echo 'checked'; } ?> >实心
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">图案<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="texture" value="{$info.texture}" placeholder="请填写商品图案">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">尺寸<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="size" value="{$info.size}" placeholder="请填写商品尺寸">
             </div>
         </div>
         <div class="form-item">

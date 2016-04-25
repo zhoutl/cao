@@ -14,28 +14,28 @@
     <link rel="stylesheet" href="__PUBLIC__/Wap/assets/css/amazeui.min.css">
     <link rel="stylesheet" href="__PUBLIC__/Wap/assets/css/app.css">
     <style type="text/css">
-        body{ box-sizing: border-box;}
+        body{ box-sizing: border-box;  font-size: 15px;background: #efeff4}
         ul{ padding:0;}
         .top{
             padding: 40px 15px 17px;
             background: grey;
             width: 100%; float:left;
         }
-        .item_img{
-            margin: 80px 20px 20px 20px;
-            height:100px;
-            width: 100px; float:left;
-        }
-        .content{ padding:15px; width:100%;
+
+        .content{
+            float: left;
+            width:100%;
             background: white;
-            color: grey;
+            color: #38373c;
         }
         .content ul{ list-style: none;}
-        .content ul li{ width:100%; float: left; font-size:14px;}
+        .content ul li{ width:100%; float: left; font-size:16px;}
 
         .content p{
+            margin: 5px;
             background: white;
             font-weight: 200;
+            font-size: 18px;
             color: black;
         }
         .bt{
@@ -46,10 +46,26 @@
         .xx{ width:25%; float:left; overflow: hidden; text-align: right;}
         .xx2{ width:73%; float:right; overflow: hidden;}
         .mp p{ margin:0;}
-        .deal{ width:63%;
-            float: right;}
+        .deal{
+            width:63%;
+            float: right;
+            padding-top:10px ;
+        }
         .ewm{ width:30%; float:left; overflow: hidden;}
         .ewm img{ width:100%;}
+        .link{
+            float: left;
+            margin-top: 20px;
+            width:100%;
+            background: white;
+            color: #38373c;
+        }
+        .link p{
+           margin: 6px;
+        }
+        .link img{
+            float: right;
+        }
     </style>
 </head>
 <body>
@@ -58,8 +74,8 @@
             <img src="http://www.one.com/cao/Uploads/ItemCode/11042.png" >
         </div>
         <div class="deal">
-            <p>足银手镯（材质+款式）</p>
-            <p>货号+id</p>
+            <span>{$data.item_name}（{$data.purity}+{$data.style}）</span></br>
+            <span>货号:{$data.artno}</span>
         </div>
     </div>
 
@@ -67,21 +83,20 @@
     <div class="content mp">
         <p>商品信息</p>
         <ul>
-            <li><div class="xx">品名：</div><div class="xx2">iuiusadiuaiudjjjjjjjjjjjjjjjjjj</div></li>
-            <li><div class="xx">图案：</div><div class="xx2">iuiusadiuaiud</div></li>
-            <li><div class="xx">材质：</div><div class="xx2">iuiusadiuaiud</div></li>
-            <li><div class="xx">款式：</div><div class="xx2">iuiusadiuaiud</div></li>
-            <li>重量：<span>iuiusadiuaiud</span></li>
-            <li>尺寸：<span>iuiusadiuaiud</span></li>
-            <li>实/空心：<span>iuiusadiuaiud</span></li>
-            <li>货号：<span>iuiusadiuaiud</span></li>
-
+            <li><div class="xx">品名：</div><div class="xx2">{$data.item_name}</div></li>
+            <li><div class="xx">图案：</div><div class="xx2">{$data.texture}</div></li>
+            <li><div class="xx">材质：</div><div class="xx2">{$data.purity}</div></li>
+            <li><div class="xx">款式：</div><div class="xx2">{$data.style}</div></li>
+            <li><div class="xx">重量：</div><div class="xx2">{$data.weight}</div></li>
+            <li><div class="xx">尺寸：</div><div class="xx2">{$data.size}</div></li>
+            <li><div class="xx">实/空心：</div><div class="xx2"><?php if($data['solid']==1){ echo "实心"; }else{ echo "空心";  } ?></div></li>
+            <li><div class="xx">货号：</div><div class="xx2">{$data.artno}</div></li>
         </ul>
     </div>
 
 
-    <div class="link bg-white">
-       <p class="bt"> 微店商城 <img src="" ></p>
+    <div class="link">
+      <a href=""> <p> 微店商城 <img src="__PUBLIC__/Admin/images/jiantou.png"></p></a>
     </div>
 
 
