@@ -71,7 +71,7 @@
 <body>
     <div class="top">
         <div class="ewm">
-            <img src="http://www.one.com/cao/Uploads/ItemCode/11042.png" >
+            <img src="__ROOT__{$img|default='/Uploads/Picture/nopic.jpg'}" >
         </div>
         <div class="deal">
             <span>{$data.item_name}（{$data.purity}+{$data.style}）</span></br>
@@ -87,7 +87,9 @@
             <li><div class="xx">图案：</div><div class="xx2">{$data.texture}</div></li>
             <li><div class="xx">材质：</div><div class="xx2">{$data.purity}</div></li>
             <li><div class="xx">款式：</div><div class="xx2">{$data.style}</div></li>
+            <?php if($data['weight']>0){ ?>
             <li><div class="xx">重量：</div><div class="xx2">{$data.weight}</div></li>
+            <?php }  ?>
             <li><div class="xx">尺寸：</div><div class="xx2">{$data.size}</div></li>
             <li><div class="xx">实/空心：</div><div class="xx2"><?php if($data['solid']==1){ echo "实心"; }else{ echo "空心";  } ?></div></li>
             <li><div class="xx">货号：</div><div class="xx2">{$data.artno}</div></li>
@@ -96,7 +98,7 @@
 
 
     <div class="link">
-      <a href=""> <p> 微店商城 <img src="__PUBLIC__/Admin/images/jiantou.png"></p></a>
+      <a href="https://shop16985503.koudaitong.com/v2/showcase/homepage?kdt_id=16793335"> <p> 微店商城 <img src="__PUBLIC__/Admin/images/jiantou.png"></p></a>
     </div>
 
 

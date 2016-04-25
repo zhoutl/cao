@@ -16,14 +16,15 @@ class ItemController extends  Controller
 
     public function  detail($id){
         $id=intval(I('id'));
-//        print_r($id);
         $item= D('Item')->field(true)->find($id);
         $style=D('Dictionary')->field(true)->find($item['style_id']);
         $item['style']=$style['title'];
         $purity=D('Dictionary')->field(true)->find($item['purity']);
         $item['purity']=$purity['title'];
+        $picture=explode(',',$item['pic']);
+        $pic=$picture[0];
+        $this->assign('img',$pic);
         $this->assign('data',$item);
-//        print_r($item);
         $this->display();
     }
 }
