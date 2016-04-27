@@ -62,7 +62,7 @@ class ItemController extends AdminController
         foreach($list as $k=>$v){
             if($v['pic']!=''){
                 $picture=explode(',',$v['pic']);
-                $list[$k]['pic']=$picture[0];
+                $list[$k]['pic']='/Uploads/Picture/small/'.$picture[0];
             }
             $style=D('Dictionary')->field('title')->find($v['style_id']);
             $list[$k]['style']=$style['title'];

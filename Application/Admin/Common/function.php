@@ -417,3 +417,131 @@ function sec(&$array) {
     }
     return $array;
 }
+
+/**
+ * 获取文档封面图片
+ * @param int $cover_id
+ * @param string $field
+ * @return 完整的数据  或者  指定的$field字段值
+ * @author huajie <banhuajie@163.com>
+ */
+function get_covers($cover_id, $field = null)
+{
+    if (empty($cover_id)) {
+        if ($field == 'path') {
+            return 'Public/static/assets/img/nopic.png';
+
+        }
+        return false;
+    }
+    $picture = M('Picture')->where(array('status' => 1))->getById($cover_id);
+
+    return empty($field) ? $picture : $picture[$field];
+}
+
+/**
+ * 获取缩略图
+ * @param unknown_type $filename 原图路劲、url
+ * @param unknown_type $width 宽度
+ * @param unknown_type $height 高
+ * @param unknown_type $cut 是否切割 默认不切割
+ * @return string
+ */
+function getThumbImage($filename, $width = 100, $height = 'auto',$cut=false, $replace = false,$type='big')
+{
+    define('UPLOAD_URL', '');
+    define('UPLOAD_PATH', '');
+    $filename = str_ireplace(UPLOAD_URL, '', $filename); //将URL转化为本地地址
+    $info = pathinfo($filename);
+    $thumbdir=str_replace('original',$type,$info['dirname']);
+    $oldFile = $info['dirname'] . DIRECTORY_SEPARATOR . $info['filename'] . '.' . $info['extension'];
+    $thumbFile = $thumbdir . DIRECTORY_SEPARATOR . $info['filename'] .'.'. $info['extension'];
+    $oldFile = str_replace('\\', '/', $oldFile);
+    $thumbFile = str_replace('\\', '/', $thumbFile);
+
+
+    $filename = ltrim($filename, '/');
+    $oldFile = ltrim($oldFile, '/');
+    $thumbFile = ltrim($thumbFile, '/');
+	$pathStr =  substr($thumbdir,1);
+        if ( !file_exists( $pathStr ) ) {
+            if ( !mkdir( $pathStr , 0777 , true ) ) {
+                return false;
+            }
+        }
+		
+		
+    //原图不存在直接返回
+    if (!file_exists(UPLOAD_PATH . $oldFile)) {
+        @unlink(UPLOAD_PATH . $thumbFile);
+        $info['src'] = $oldFile;
+        $info['width'] = intval($width);
+        $info['height'] = intval($height);
+        return $info;
+        //缩图已存在并且 replace替换为false
+    } elseif (file_exists(UPLOAD_PATH . $thumbFile) && !$replace) {
+        $imageinfo = getimagesize(UPLOAD_PATH . $thumbFile);
+        //dump($imageinfo);exit;
+        $info['src'] = $thumbFile;
+        $info['width'] = intval($imageinfo[0]);
+        $info['height'] = intval($imageinfo[1]);
+        return $info;
+        //执行缩图操作
+    } else {
+        $oldimageinfo = getimagesize(UPLOAD_PATH . $oldFile);
+        $old_image_width = intval($oldimageinfo[0]);
+        $old_image_height = intval($oldimageinfo[1]);
+        if ($old_image_width <= $width && $old_image_height <= $height) {
+            @unlink(UPLOAD_PATH . $thumbFile);
+            @copy(UPLOAD_PATH . $oldFile, UPLOAD_PATH . $thumbFile);
+            $info['src'] = $thumbFile;
+            $info['width'] = $old_image_width;
+            $info['height'] = $old_image_height;
+            return $info;
+        } else {
+            //生成缩略图
+            // tsload( ADDON_PATH.'/library/Image.class.php' );
+            // if($cut){
+            //     Image::cut(UPLOAD_PATH.$filename, UPLOAD_PATH.$thumbFile, $width, $height);
+            // }else{
+            //     Image::thumb(UPLOAD_PATH.$filename, UPLOAD_PATH.$thumbFile, '', $width, $height);
+            // }
+            //生成缩略图 - 更好的方法
+            if ($height == "auto") $height = 0;
+            //import('phpthumb.PhpThumbFactory');
+			vendor('phpthumb.PhpThumbFactory','','.class.php');
+           // require_once('ThinkPHP\Library\Vendor\phpthumb\PhpThumbFactory.class.php');
+
+            $thumb = PhpThumbFactory::create(UPLOAD_PATH . $filename);
+            //dump($thumb);exit;
+            if ($cut) {
+                $thumb->adaptiveResize($width, $height);
+            } else {
+                $thumb->resize($width, $height);
+            }
+            $res = $thumb->save(UPLOAD_PATH . $thumbFile);
+            //缩图失败
+            if (!$res) {
+                $thumbFile = $oldFile;
+            }
+            $info['width'] = $width;
+            $info['height'] = $height;
+            $info['src'] = $thumbFile;
+            return $info;
+        }
+    }
+}
+
+
+function get_sc($cover_id, $width = 100, $height = 'auto', $cut = true, $replace = false,$type='big')
+{
+    //$picture = M('Picture')->where(array('status' => 1))->getById($cover_id);
+    $picture['path']='/Uploads/Picture/original/'.$cover_id;
+    if(empty($picture))
+    {
+        return 'Public/static/assets/img/nopic.png';
+    }
+    $attach = getThumbImage($picture['path'], $width, $height, $cut, $replace,$type);
+
+    return $attach;
+}

@@ -95,6 +95,7 @@
                     </th>
                     <th>货号</th>
                     <th>名称</th>
+                    <th>价格</th>
                     <th>图片</th>
                     <th>款式</th>
                     <th>适合人群</th>
@@ -114,6 +115,7 @@
                             <td width="10%">
                                 <a href="{:U('detail?id='.$item['id'])}">{$item.item_name}</a>
                             </td>
+                            <td>{$item.price}</td>
                             <td><img src="__ROOT__{$item.pic|default='/Uploads/Picture/nopic.jpg'}" width="100px" height="100px"></td>
                             <td>{$item.style}</td>
                             <td>{$item.crowd_title}</td>

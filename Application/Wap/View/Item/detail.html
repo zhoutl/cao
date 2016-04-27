@@ -14,12 +14,20 @@
     <link rel="stylesheet" href="__PUBLIC__/Wap/assets/css/amazeui.min.css">
     <link rel="stylesheet" href="__PUBLIC__/Wap/assets/css/app.css">
     <style type="text/css">
-        body{ box-sizing: border-box;  font-size: 15px;background: #efeff4}
-        ul{ padding:0;}
+        body{ padding: 0; box-sizing: border-box;  font-size: 15px;background: #efeff4; font-family: "Microsoft YaHei"}
+        a{text-decoration:none;}
         .top{
             padding: 40px 15px 17px;
-            background: grey;
+            background: #38373c;
             width: 100%; float:left;
+        }
+        .name{
+            font-size: 20px;
+            color: #FFFFFF;
+        }
+        .artno{
+            font-size: 16px;
+            color: #E7E7E7;
         }
 
         .content{
@@ -27,24 +35,19 @@
             width:100%;
             background: white;
             color: #38373c;
+            padding: 10px;
         }
-        .content ul{ list-style: none;}
-        .content ul li{ width:100%; float: left; font-size:16px;}
+        .content ul{ list-style: none; color: #868686;margin:10px 5px 10px 5px}
+        .content ul li{ width:100%; float: left; font-size:18px; margin-left: -20px;}
 
         .content p{
-            margin: 5px;
-            background: white;
-            font-weight: 200;
-            font-size: 18px;
-            color: black;
+            padding: 5px 24px 0px 12px;
+            font-size: 20px;
+            color: #333333;
         }
-        .bt{
-            background: white;
-            padding: 10px 0px;
-            border: #39443c;
-        }
-        .xx{ width:25%; float:left; overflow: hidden; text-align: right;}
-        .xx2{ width:73%; float:right; overflow: hidden;}
+
+        .xx{ width:33%; float:left; overflow: hidden; text-align: right;}
+        .xx2{ width:67%; float:right; overflow: hidden;}
         .mp p{ margin:0;}
         .deal{
             width:63%;
@@ -59,12 +62,16 @@
             width:100%;
             background: white;
             color: #38373c;
+            border-color: #0000C0;
         }
         .link p{
-           margin: 6px;
+            margin: 5px 16px;
+            font-size: 19px;
+            color: #333333;
         }
         .link img{
             float: right;
+            margin: 3px 0px;
         }
     </style>
 </head>
@@ -74,14 +81,14 @@
             <img src="__ROOT__{$img|default='/Uploads/Picture/nopic.jpg'}" >
         </div>
         <div class="deal">
-            <span>{$data.item_name}（{$data.purity}+{$data.style}）</span></br>
-            <span>货号:{$data.artno}</span>
+            <span class="name">{$data.item_name}（{$data.purity}+{$data.style}）</span></br>
+            <span class="artno">货号:{$data.artno}</span>
         </div>
     </div>
 
 
     <div class="content mp">
-        <p>商品信息</p>
+        <p>商品信息:</p>
         <ul>
             <li><div class="xx">品名：</div><div class="xx2">{$data.item_name}</div></li>
             <li><div class="xx">图案：</div><div class="xx2">{$data.texture}</div></li>

@@ -28,5 +28,9 @@ class IndexController extends AdminController {
             $this->redirect('Public/login');
         }
     }
+    public function aa(){
+        $a=get_sc('2016-04-27/57202978274e6.png', $width = 22, $height = 22, $cut = true, $replace = false,$type='small');
+        print_r($a);
+    }
 
 }

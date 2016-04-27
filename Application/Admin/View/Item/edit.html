@@ -98,7 +98,7 @@
                         <volist name="picture" id="picture">
                             <div class="upload-pre-item">
                                 <input type="hidden" name="icon[]" value="{$picture['path']}" class="icon" />
-                                <img src="__ROOT__{$picture['path']}" data-id="{$picture['id']}"/>
+                                <img src="__ROOT__/Uploads/Picture/original/{$picture['path']}" data-id="{$picture['id']}"/>
                                 <span class='btn-close' title='删除图片'></span>
                             </div>
                         </volist>
@@ -130,7 +130,7 @@
                              $_img_path = $("<input type='hidden' name='icon[]' class='icon' value=''/>");
                             $_img_path.val(data.path);
                             $('#tab1').append($_img_path);
-                            src=data.url || '__ROOT__'+data.path;
+                            src=data.url || '__ROOT__/Uploads/Picture/original/'+data.path;
                             //创建图片节点
                             $_upload_img = $("<img src=" + src +" title='点击显示大图' > ");
                             $_img_del = $("<span class='btn-close' title='删除图片'></span>");
@@ -176,6 +176,12 @@
             <label class="item-label">尺寸<span class="check-tips"></span></label>
             <div class="controls">
                 <input type="text" class="text input-large" name="size" value="{$info.size}" placeholder="请填写商品尺寸">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">价格<span class="check-tips"></span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="price" value="{$info.price}" placeholder="请填写商品价格">
             </div>
         </div>
         <div class="form-item">

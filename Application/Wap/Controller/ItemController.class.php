@@ -22,7 +22,7 @@ class ItemController extends  Controller
         $purity=D('Dictionary')->field(true)->find($item['purity']);
         $item['purity']=$purity['title'];
         $picture=explode(',',$item['pic']);
-        $pic=$picture[0];
+        $pic='/Uploads/Picture/small/'.$picture[0];
         $this->assign('img',$pic);
         $this->assign('data',$item);
         $this->display();
