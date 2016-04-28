@@ -34,7 +34,7 @@ class OrderController extends AdminController
         if($start_time > 0 && $start_time > 0 && $start_time <= $end_time){
             $map['create_time'] = array('between',array($start_time,$end_time));
         }
-        $list = $this->lists('Orders', $map,'create_time,order_id desc');
+        $list = $this->lists('Orders', $map,'create_time desc');
         if($list) {
             $this->assign('list',$list);
         }

@@ -21,6 +21,14 @@ class ItemController extends  Controller
         $item['style']=$style['title'];
         $purity=D('Dictionary')->field(true)->find($item['purity']);
         $item['purity']=$purity['title'];
+        $jishu=floor(floor($item['weight'])/10)*10+5;
+        if((floor($item['weight'])%10)>=5){
+            $max=$jishu+5;
+            $item['weight']=$jishu.'~'.$max;
+        }else{
+            $min=$jishu-5;
+            $item['weight']=$min.'~'.$jishu;
+        }
         $picture=explode(',',$item['pic']);
         $pic='/Uploads/Picture/small/'.$picture[0];
         $this->assign('img',$pic);

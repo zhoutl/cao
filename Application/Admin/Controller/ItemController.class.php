@@ -58,7 +58,7 @@ class ItemController extends AdminController
 
         $this->assign('info',$info);
         //分页信息
-        $list = $this->lists('Item', $map,'add_time,id desc');
+        $list = $this->lists('Item', $map,'add_time desc');
         foreach($list as $k=>$v){
             if($v['pic']!=''){
                 $picture=explode(',',$v['pic']);
